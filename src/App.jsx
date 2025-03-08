@@ -1,83 +1,44 @@
-// // import React, { useState } from "react";
-// // import Card from "./components/Card";
-
-// // const App = () => {
-// //   const [jock, setJocks] = useState([]);
-
-// //  console.log(jock);
-
-// //  const generateJock = (e) => {
-// //   e.preventDefault();
-// //   setJocks();
-// //  }
-
-// //   return (
-//     // <div className="flex justify-center item-center">
-//     //   <div className="flex flex-col justify-center item-center h-screen">
-//     //     <input
-//     //       className="border-2 p-10 mb-5 text-center rounded-sm"
-//     //       type="text"
-//     //       placeholder="Here is the jock"
-//     //       value={jock}
-//     //     />
-//     //     <button onClick={generateJock} className="border-2 py-2 px-4 hover:bg-black hover:text-white rounded-2xl">
-//     //       Generate Jock
-//     //     </button>
-//     //   </div>
-//     // </div>
-// //   );
-// // };
-// // <Card />;
-
-// // export default App;
-
-// import React from 'react'
-// import Card from './components/Card'
-// import { useState } from "react";
-
-// function App () {
-//   const [jock, setJocks] = useState([]);
-
-//   const generateJock = (e)=> {
-//     e.preventDefault();
-//     console.log(jock)
-//   }
-//   return (
-//     <>
-//     <div className="flex justify-center item-center">
-//       <div className="flex flex-col justify-center item-center h-screen">
-//        {/* input box q liya tune ?oh empty box nhi na ban raha tha isiliye tu lai unxpected hai bhendi  */}
-//         <input
-//           className="border-2 p-10 mb-5 text-center rounded-sm"
-//           type="text"
-//           placeholder="Here is the jock"
-//           value={jock}
-//         />
-//         <button onClick={generateJock} className="border-2 py-2 px-4 hover:bg-black hover:text-white rounded-2xl">
-//           Generate Jock
-//         </button>
-//       </div>
-//       <div>
-//         {jock.map(setJocks)}
-//       </div>
-//     </div>
-//     <Card/>
-//     </>
-//   );
-// }
-
-// export default App;
-
 import React from 'react'
-import Card from './components/Card'
+import { useEffect, useState } from "react";
 
 const App = () => {
+  const [data, setData] = useState();
+
+  const api = "https://official-joke-api.appspot.com/random_joke";
+
+  const fetchData = async () => {
+    const response = await fetch(api);
+    const data = await response.json();
+    console.log(data);
+    setData(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <div>
-
-      <Card />
+    <div className="flex flex-col justify-center items-center h-screen gap-4">
+      <div className="border-2 p-20">
+        {" "}
+        <div className="mb-10">
+          {data && (
+            <>
+              <p>Setup : {data.setup}</p>
+              <p>Punchline : {data.punchline}</p>
+            </>
+          )}
+          <p className="border-2 p-10 rounded-2xl mt-5">Loading ..... </p>
+        </div>
+        <button
+          onClick={() => fetchData()}
+          className="border-2 py-2 px-4 hover:bg-black hover:text-white rounded-2xl"
+        >
+          Generate Jock
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
